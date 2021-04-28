@@ -10,11 +10,11 @@ namespace RisHelper
 {
     public static class RisReader
     {
-        private const string _entriesSeparator = "\r\n\r\n";
+        private const string _entriesSeparator = "\n\n";
         private const string _fieldsSeparator = "\n";
         private const string _fieldSeparator = "  - ";
-        private static readonly ConcurrentDictionary<Type, IRisFieldResolver> _resolvers = new ConcurrentDictionary<Type, IRisFieldResolver>();
-        private static readonly ConcurrentDictionary<string, RisMapping> _mappings = new ConcurrentDictionary<string, RisMapping>();
+        private static readonly ConcurrentDictionary<Type, IFieldConverter> _converters = new ConcurrentDictionary<Type, IFieldConverter>();
+        private static readonly ConcurrentDictionary<string, Mapping> _mappings = new ConcurrentDictionary<string, Mapping>();
 
         public static IEnumerable<RisRecord> Read(string path)
         {
@@ -87,12 +87,12 @@ namespace RisHelper
                 var fieldArray = Regex.Split(field, _fieldSeparator);
                 if (fieldArray.Length == 2)
                 {
-                    if (_mappings.TryGetValue(fieldArray[0], out RisMapping mapping))
+                    if (_mappings.TryGetValue(fieldArray[0], out Mapping mapping))
                     {
                         var tag = fieldArray[0];
                         var srcValue = fieldArray[1];
                         var destValue = mapping.Property.GetValue(record);
-                        mapping.Property.SetValue(record, mapping.Resolver.Resolve(tag, srcValue, destValue), null);
+                        mapping.Property.SetValue(record, mapping.Converter.Read(tag, srcValue, destValue), null);
                     }
                 }
             }
@@ -109,15 +109,16 @@ namespace RisHelper
                 var attributes = property.GetCustomAttributes(false);
                 foreach(var attribute in attributes)
                 {
-                    if (attribute is RisFieldAttribute fieldAttribute)
+                    if (attribute is FieldAttribute fieldAttribute)
                     {
                         var tags = fieldAttribute.Tag.Split(',').Select(x => x.Trim());
                         foreach(var tag in tags)
                         {
-                            var resolver = _resolvers.GetOrAdd(fieldAttribute.ResolverType,
-                                (t) => (IRisFieldResolver)Activator.CreateInstance(fieldAttribute.ResolverType));
+                            var converter = _converters.GetOrAdd(fieldAttribute.ConverterType,
+                                (t) => (IFieldConverter)Activator.CreateInstance(fieldAttribute.ConverterType));
 
-                            _mappings[tag] = new RisMapping(property, resolver);
+                            var mapping = new Mapping(property, converter);
+                            _mappings.AddOrUpdate(tag, (k) => mapping, (k, m) => mapping);
                         }
                     }
                 }

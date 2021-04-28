@@ -3,24 +3,24 @@ using System.Reflection;
 
 namespace RisHelper.Internal
 {
-    internal class RisMapping
+    internal class Mapping
     {
         public PropertyInfo Property { get; }
-        public IRisFieldResolver Resolver { get; }
+        public IFieldConverter Converter { get; }
 
-        public RisMapping(PropertyInfo property, IRisFieldResolver resolver)
+        public Mapping(PropertyInfo property, IFieldConverter converter)
         {
             if (property == null)
             {
                 throw new ArgumentNullException(nameof(property));
             }
-            if (resolver == null)
+            if (converter == null)
             {
-                throw new ArgumentNullException(nameof(resolver));
+                throw new ArgumentNullException(nameof(converter));
             }
 
             Property = property;
-            Resolver = resolver;
+            Converter = converter;
         }
     }
 }

@@ -1,32 +1,36 @@
 TY  - JOUR
-ID  - MR4221334
+ID  - MR4190750
+AU  - Adil Khan, Muhammad
 AU  - Pečarić, Đilda
 AU  - Pečarić, Josip
-AU  - Pokaz, Dora
-TI  - Generalized Csiszár's $f$-divergence for Lipschitzian functions.
-JO  - Mathematical Inequalities \& Applications
-JA  - Math. Inequal. Appl.
+TI  - A new refinement of the Jensen inequality with applications in information theory.
+JO  - Bulletin of the Malaysian Mathematical Sciences Society
+JA  - Bull. Malays. Math. Sci. Soc.
 PY  - 2021/01/01
 Y1  - 20210101///
-VL  - 24
+VL  - 44
 IS  - 1
-M1  - 24
-SP  - 13
-SN  - 18489966
-SN  - 13314343
-N1  - Accession Number: MR4221334 Author Affiliation: CT-CCU; Croatian Catholic University; RS-RPF-NDM; Russian Peoples' Friendship University (RUDN); CT-ZAGRCE; Department of Mathematics, University of Zagreb. ISSN: 1331-4343 (print). eISSN: 1848-9966. Copyright: ©Copyright 2021, American Mathematical Society. Document Type: Journal. Publication Type: Journal Date: 20210101. Pages: 13-30
-KW  - 62B10 Statistics -- Sufficiency and information -- Information-theoretic topics
-KW  - 26A16 Real functions -- Functions of one variable -- Lipschitz
+M1  - 44
+SP  - 267
+SN  - 21804206
+SN  - 01266705
+N1  - Accession Number: MR4190750; Authors: Pečarić, Josip E.; 883422; 1229059; 137335 Author Affiliation: PAK-PESH-M; Department of Mathematics, University of Peshawar; CT-CCU; Croatian Catholic University; RS-RPF-NDM; Russian Peoples' Friendship University (RUDN). ISSN: 0126-6705 (print). eISSN: 2180-4206. Copyright: ©Copyright 2021, American Mathematical Society. Document Type: Journal. Publication Type: Journal Date: 20210101. Pages: 267-278
+AB  - Summary: ``The Jensen inequality is one of the most important inequalities in theory of inequalities, and numerous results are devoted to this inequality. This inequality has many applications in several fields. This article is devoted to present a new interesting refinement of the well-known Jensen inequality and to give applications for means. The paper also aims to achieve numerous applications in information theory; in particular, a comprehensive detail has been given for Zipf's law and obtained bounds for Zipf-Mandelbrot entropy. At the end of the article, a more general refinement of Jensen inequality is presented associated with $m$ finite sequences.''
 KW  - 26D15 Real functions -- Inequalities -- Inequalities for sums, series and integrals
-KW  - Real functions -- Functions of one variable -- Lipschitz
+KW  - 94A15 Information and communication, circuits -- Communication, information -- Information theory, general
+KW  - 94A17 Information and communication, circuits -- Communication, information -- Measures of information, entropy
+KW  - Information and communication, circuits -- Communication, information -- Information theory, general
+KW  - Information and communication, circuits -- Communication, information -- Measures of information, entropy
 KW  - Real functions -- Inequalities -- Inequalities for sums, series and integrals
-KW  - Statistics -- Sufficiency and information -- Information-theoretic topics
 LA  - English
 LA  - English
-UR  - http://search.ebscohost.com/login.aspx?direct=true&db=msn&AN=MR4221334&site=ehost-live
-UR  - http://www.ams.org/mathscinet-getitem?mr=4221334
-UR  - http://mia.ele-math.com/
-UR  - http://dx.doi.org/10.7153/mia-2021-24-02
+UR  - http://search.ebscohost.com/login.aspx?direct=true&db=msn&AN=MR4190750&site=ehost-live
+UR  - http://www.ams.org/mathscinet/MRAuthorID/137335
+UR  - http://www.ams.org/mathscinet/MRAuthorID/1229059
+UR  - http://www.ams.org/mathscinet/MRAuthorID/883422
+UR  - http://www.ams.org/mathscinet-getitem?mr=4190750
+UR  - https://www.springer.com/journal/40840
+UR  - http://dx.doi.org/10.1007/s40840-020-00944-5
 DP  - EBSCOhost
 DB  - msn
 ER  - 
