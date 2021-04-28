@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31112.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1A9988D6-63D9-497E-9200-B91025AC0E6F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{46712A5A-4EA9-4F04-A607-F7E15AE14D7A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RisHelper", "src\RisHelper.csproj", "{398AD8A2-8AFB-410F-B431-A0046F7844B1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RisHelper.Sample", "sample\RisHelper.Sample.csproj", "{3475954A-1F47-402C-BB39-7278BF1DAD5B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{398AD8A2-8AFB-410F-B431-A0046F7844B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{398AD8A2-8AFB-410F-B431-A0046F7844B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{398AD8A2-8AFB-410F-B431-A0046F7844B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{398AD8A2-8AFB-410F-B431-A0046F7844B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3475954A-1F47-402C-BB39-7278BF1DAD5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3475954A-1F47-402C-BB39-7278BF1DAD5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3475954A-1F47-402C-BB39-7278BF1DAD5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3475954A-1F47-402C-BB39-7278BF1DAD5B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{398AD8A2-8AFB-410F-B431-A0046F7844B1} = {1A9988D6-63D9-497E-9200-B91025AC0E6F}
+		{3475954A-1F47-402C-BB39-7278BF1DAD5B} = {46712A5A-4EA9-4F04-A607-F7E15AE14D7A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7B004344-04E3-4476-95DE-D540A9FC2530}
+	EndGlobalSection
+EndGlobal
