@@ -1,4 +1,4 @@
-# Structr
+# RisHelper
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/askalione/rishelper?branch=master&svg=true)](https://ci.appveyor.com/project/askalione/rishelper) 
 [![GitHub license](https://img.shields.io/github/license/askalione/rishelper)](https://github.com/askalione/RisHelper/blob/master/LICENSE)  
 
