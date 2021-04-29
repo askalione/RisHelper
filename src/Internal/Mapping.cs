@@ -1,26 +1,61 @@
 using System;
+using System.Collections.Concurrent;
+using System.Linq;
 using System.Reflection;
 
 namespace RisHelper.Internal
 {
-    internal class Mapping
+    internal static class Mapping
     {
-        public PropertyInfo Property { get; }
-        public IFieldConverter Converter { get; }
+        private static readonly ConcurrentDictionary<Type, IFieldConverter> _converters = new ConcurrentDictionary<Type, IFieldConverter>();
+        private static readonly ConcurrentDictionary<string, PropertyContext> _propertiesContexts = new ConcurrentDictionary<string, PropertyContext>();
+        private static readonly ConcurrentDictionary<string, PropertyContext> _tagMappings = new ConcurrentDictionary<string, PropertyContext>();
 
-        public Mapping(PropertyInfo property, IFieldConverter converter)
+        static Mapping()
+        {
+            var type = typeof(RisRecord);
+            var properties = type.GetProperties();
+            foreach (var property in properties)
+            {
+                var attributes = property.GetCustomAttributes(false);
+                foreach (var attribute in attributes)
+                {
+                    if (attribute is FieldAttribute fieldAttribute)
+                    {
+                        var tags = fieldAttribute.Tag.Split(',').Select(x => x.Trim());
+                        foreach (var tag in tags)
+                        {
+                            var converter = _converters.GetOrAdd(fieldAttribute.ConverterType,
+                                (t) => (IFieldConverter)Activator.CreateInstance(fieldAttribute.ConverterType));
+
+                            var propertyContext = new PropertyContext(property, tag, converter);
+                            _propertiesContexts.GetOrAdd(property.Name, (k) => propertyContext);
+                            _tagMappings.AddOrUpdate(tag, (k) => propertyContext, (k, s) => propertyContext);
+
+                        }
+                    }
+                }
+            }
+        }
+
+        public static bool TryGetPropertyContext(PropertyInfo property, out PropertyContext propertyMapping)
         {
             if (property == null)
             {
                 throw new ArgumentNullException(nameof(property));
             }
-            if (converter == null)
+
+            return _propertiesContexts.TryGetValue(property.Name, out propertyMapping);
+        }
+
+        public static bool TryGetPropertyContext(string tag, out PropertyContext propertyMapping)
+        {
+            if (string.IsNullOrEmpty(tag))
             {
-                throw new ArgumentNullException(nameof(converter));
+                throw new ArgumentNullException(nameof(tag));
             }
 
-            Property = property;
-            Converter = converter;
+            return _tagMappings.TryGetValue(tag, out propertyMapping);
         }
     }
 }

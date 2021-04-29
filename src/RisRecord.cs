@@ -126,8 +126,8 @@ namespace RisHelper
         /// <summary>
         /// Editor
         /// </summary>
-        [Field(tag: "ED")]
-        public string Editor { get; set; }
+        [Field(tag: "ED", converterType: typeof(StringListFieldConverter))]
+        public IEnumerable<string> Editors { get; set; }
         /// <summary>
         /// End Page
         /// </summary>
@@ -286,7 +286,7 @@ namespace RisHelper
         /// <summary>
         /// Primary Title
         /// </summary>
-        [Field(tag: "T1,T2,T3,TI", converterType: typeof(RisRecordTitleListFieldConverter))]
+        [Field(tag: "TI,T1,T2,T3", converterType: typeof(RisRecordTitleListFieldConverter))]
         public IEnumerable<RisRecordTitle> Titles { get; set; }
         /// <summary>
         /// Translated Title
@@ -317,6 +317,7 @@ namespace RisHelper
         public RisRecord()
         {
             Authors = new List<RisRecordAuthor>();
+            Editors = new List<string>();
             JournalAbbreviatedTitles = new List<string>();
             JournalFullTitles = new List<string>();
             JournalTitles = new List<string>();

@@ -1,0 +1,33 @@
+TY  - JOUR
+ID  - MR3901996
+AU  - Faminskii, Andrei V.
+ED  - Airapetyan, R. G.
+TI  - Control problems with an integral condition for Korteweg--de~Vries equation on unbounded domains.
+JO  - Journal of Optimization Theory and Applications
+JA  - J. Optim. Theory Appl.
+PY  - 2019/01/01
+Y1  - 20190101///
+VL  - 180
+IS  - 1
+M1  - 180
+SP  - 290
+SN  - 15732878
+SN  - 00223239
+N1  - Accession Number: MR3901996; Authors: 189859 Author Affiliation: RS-RPF-NDM; Russian Peoples' Friendship University (RUDN). ISSN: 0022-3239 (print). eISSN: 1573-2878. Copyright: ©Copyright 2021, American Mathematical Society. Document Type: Journal. Publication Type: Journal Date: 20190101. Pages: 290-302
+AB  - In this paper the author considers  a control problem for  initial and initial-boundary value problems for the Korteweg--de~Vries equation  on the real axis $I_1={\Bbb R}$ and on the semi-axes $I_2=(0,+\infty)$, $I_3=(-\infty,0)$. The right-hand side of the equation is the product $f_0(t)g(t,x)$ of a given function $g(t,x)$ and a control function $f_0(t)$. The problem under study is to find a pair $\{f_0(t),u(t,x)\}$ on $[0,T]$ and $[0,T]\times I_j$ correspondingly that satisfies the initial or initial-boundary value conditions and the additional integral condition $\int_{I_j}u(t,x)\omega(x)dx =\varphi(t)$ for the given functions $\omega$ and $\varphi$. For the control problem considered existence and uniqueness theorems are proved under some additional assumptions including small input data or a small $T$.
+KW  - 49N45 Calculus of variations and optimal control; optimization -- Miscellaneous topics -- Inverse problems
+KW  - 35Q53 Partial differential equations -- Equations of mathematical physics and other areas of application -- KdV-like equations
+KW  - 35Q93 Partial differential equations -- Equations of mathematical physics and other areas of application -- PDEs in connection with control and optimization
+KW  - Partial differential equations -- Equations of mathematical physics and other areas of application -- KdV-like equations
+KW  - Partial differential equations -- Equations of mathematical physics and other areas of application -- PDEs in connection with control and optimization
+KW  - Calculus of variations and optimal control; optimization -- Miscellaneous topics -- Inverse problems
+LA  - English
+LA  - English
+UR  - http://search.ebscohost.com/login.aspx?direct=true&db=msn&AN=MR3901996&site=ehost-live
+UR  - http://www.ams.org/mathscinet/MRAuthorID/189859
+UR  - http://www.ams.org/mathscinet-getitem?mr=3901996
+UR  - https://www.springer.com/journal/10957
+UR  - http://dx.doi.org/10.1007/s10957-018-1360-z
+DP  - EBSCOhost
+DB  - msn
+ER  - 

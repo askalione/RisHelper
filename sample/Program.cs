@@ -1,6 +1,4 @@
-using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 
 namespace RisHelper.Sample
@@ -9,10 +7,11 @@ namespace RisHelper.Sample
     {
         static void Main(string[] args)
         {
-            var samplePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\..\..\..\data\sample.ris";
-            var records = RisReader.Read(samplePath);
+            var samplePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\..\..\..\data\";
 
-            var types = records.Select(x => x.Type).Distinct().ToList();
+            var records = RisReader.Read(Path.Combine(samplePath, "sample-read.ris"));
+
+            RisWriter.Write(records, Path.Combine(samplePath, "sample-write.ris"));
         }
     }
 }

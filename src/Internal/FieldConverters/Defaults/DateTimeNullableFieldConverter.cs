@@ -16,5 +16,15 @@ namespace RisHelper.Internal.FieldConverters.Defaults
 
             return null;
         }
+
+        protected override string[] Write(string tag, DateTime? value)
+        {
+            if (value.HasValue == false)
+            {
+                return null;
+            }
+
+            return new[] { tag + Constants.FieldValueSeparator + value.Value.ToString("yyyy/MM/dd") };
+        }
     }
 }

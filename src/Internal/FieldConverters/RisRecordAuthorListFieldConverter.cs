@@ -37,5 +37,44 @@ namespace RisHelper.Internal.FieldConverters
 
             return value;
         }
+
+        protected override string[] Write(string tag, IEnumerable<RisRecordAuthor> value)
+        {
+            var destValues = value
+                .Where(x => string.IsNullOrEmpty(x.Value) == false)
+                .ToList();
+
+            if (destValues == null)
+            {
+                return null;
+            }
+
+            var result = new List<string>();
+
+            foreach (var destValue in destValues)
+            {
+                var destTag = tag;
+
+                switch (destValue.Type)
+                {
+                    case RisRecordAuthorType.Primary:
+                        destTag = "A1";
+                        break;
+                    case RisRecordAuthorType.Secondary:
+                        destTag = "A2";
+                        break;
+                    case RisRecordAuthorType.Tertiary:
+                        destTag = "A3";
+                        break;
+                    case RisRecordAuthorType.Subsidiary:
+                        destTag = "A4";
+                        break;
+                }
+
+                result.Add(destTag + Constants.FieldValueSeparator + destValue);
+            }
+
+            return result.ToArray();
+        }
     }
 }

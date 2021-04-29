@@ -34,5 +34,41 @@ namespace RisHelper.Internal.FieldConverters
 
             return value;
         }
+
+        protected override string[] Write(string tag, IEnumerable<RisRecordTitle> value)
+        {
+            var destValues = value
+                 .Where(x => string.IsNullOrEmpty(x.Value) == false)
+                 .ToList();
+
+            if (destValues == null)
+            {
+                return null;
+            }
+
+            var result = new List<string>();
+
+            foreach (var destValue in destValues)
+            {
+                var destTag = tag;
+
+                switch (destValue.Type)
+                {
+                    case RisRecordTitleType.Primary:
+                        destTag = "T1";
+                        break;
+                    case RisRecordTitleType.Secondary:
+                        destTag = "T2";
+                        break;
+                    case RisRecordTitleType.Tertiary:
+                        destTag = "T3";
+                        break;
+                }
+
+                result.Add(destTag + Constants.FieldValueSeparator + destValue);
+            }
+
+            return result.ToArray();
+        }
     }
 }

@@ -15,5 +15,19 @@ namespace RisHelper.Internal.FieldConverters.Defaults
 
             return value;
         }
+
+        protected override string[] Write(string tag, IEnumerable<string> value)
+        {
+            var destValues = value
+                .Where(x => string.IsNullOrEmpty(x) == false)
+                .ToList();
+
+            if (destValues.Count == 0)
+            {
+                return null;
+            }
+
+            return destValues.Select(x => tag + Constants.FieldValueSeparator + x).ToArray();
+        }
     }
 }

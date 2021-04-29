@@ -21,5 +21,15 @@ namespace RisHelper.Internal.FieldConverters
 
             return null;
         }
+
+        protected override string[] Write(string tag, int? value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new[] { tag + Constants.FieldValueSeparator + value };
+        }
     }
 }
