@@ -6,7 +6,7 @@ namespace RisHelper.Internal.FieldConverters
     {
         protected override int? Read(string tag, string srcValue, int? destValue)
         {
-            if (string.IsNullOrEmpty(srcValue) == false)
+            if (string.IsNullOrWhiteSpace(srcValue) == false)
             {
                 if (int.TryParse(srcValue, out int year))
                 {
@@ -22,14 +22,14 @@ namespace RisHelper.Internal.FieldConverters
             return null;
         }
 
-        protected override string[] Write(string tag, int? value)
+        protected override Field[] Write(string tag, int? value)
         {
             if (value == null)
             {
-                return null;
+                return [];
             }
 
-            return new[] { tag + Constants.FieldValueSeparator + value };
+            return [new Field(tag, value.ToString())];
         }
     }
 }

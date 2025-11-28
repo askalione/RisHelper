@@ -2,62 +2,120 @@ using RisHelper.Internal;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace RisHelper
 {
     public static class RisWriter
     {
-        public static byte[] Write(IEnumerable<RisRecord> records)
+        public static async Task<Stream> WriteAsync(IEnumerable<RisRecord> records)
         {
             if (records == null)
             {
                 throw new ArgumentNullException(nameof(records));
             }
 
-            var stringBuilder = new StringBuilder(100);
+            PropertyInfo[] properties = typeof(RisRecord).GetProperties();
 
-            var properties = typeof(RisRecord).GetProperties();
+            MemoryStream stream = new MemoryStream();
+            using StreamWriter streamWriter = new StreamWriter(stream, Encoding.UTF8, 1024, true);
 
-            foreach (var record in records)
+            foreach (RisRecord record in records)
             {
-                foreach (var property in properties)
+                foreach (PropertyInfo property in properties)
                 {
                     if (Mapping.TryGetPropertyContext(property, out PropertyContext propertyContext))
                     {
-                        var fields = propertyContext.Converter.Write(propertyContext.Tag, property.GetValue(record, null));
-                        if (fields != null)
+                        Field[] fields = propertyContext.Converter.Write(propertyContext.Tag, property.GetValue(record, null));
+                        foreach (Field field in fields)
                         {
-                            foreach (var field in fields)
-                            {
-                                stringBuilder.AppendLine(field);
-                            }
+                            await streamWriter.WriteLineAsync(field.ToString());
                         }
                     }
                 }
 
-                stringBuilder.AppendLine(Constants.EndTag + Constants.FieldValueSeparator);
+                await streamWriter.WriteLineAsync(Constants.EndingTag + Constants.FieldValueSeparator);
             }
 
-            var bytes = Encoding.UTF8.GetBytes(stringBuilder.ToString());
+            await streamWriter.FlushAsync();
+            stream.Position = 0;
 
-            return bytes;
+            return stream;
         }
 
-        public static void Write(IEnumerable<RisRecord> records, string path)
+        public static async Task<Stream> WriteAsync(IAsyncEnumerable<RisRecord> records)
         {
             if (records == null)
             {
                 throw new ArgumentNullException(nameof(records));
             }
-            if (string.IsNullOrEmpty(path))
+
+            PropertyInfo[] properties = typeof(RisRecord).GetProperties();
+
+            MemoryStream stream = new MemoryStream();
+            using StreamWriter streamWriter = new StreamWriter(stream, Encoding.UTF8, 1024, true);
+
+            await foreach (RisRecord record in records)
             {
-                throw new ArgumentNullException(nameof(path));
+                foreach (PropertyInfo property in properties)
+                {
+                    if (Mapping.TryGetPropertyContext(property, out PropertyContext propertyContext))
+                    {
+                        Field[] fields = propertyContext.Converter.Write(propertyContext.Tag, property.GetValue(record, null));
+                        foreach (Field field in fields)
+                        {
+                            await streamWriter.WriteLineAsync(field.ToString());
+                        }
+                    }
+                }
+
+                await streamWriter.WriteLineAsync(Constants.EndingTag + Constants.FieldValueSeparator);
             }
 
-            var bytes = Write(records);
+            await streamWriter.FlushAsync();
+            stream.Position = 0;
 
-            File.WriteAllBytes(path, bytes);
+            return stream;
+        }
+
+        public static async Task WriteAsync(IEnumerable<RisRecord> records, string filePath)
+        {
+            if (records == null)
+            {
+                throw new ArgumentNullException(nameof(records));
+            }
+            if (string.IsNullOrWhiteSpace(filePath))
+            {
+                throw new ArgumentNullException(nameof(filePath));
+            }
+
+            Stream stream = await WriteAsync(records);
+
+            using (FileStream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+            {
+                await stream.CopyToAsync(fileStream);
+            }
+        }
+
+        public static async Task WriteAsync(IAsyncEnumerable<RisRecord> records, string filePath)
+        {
+            if (records == null)
+            {
+                throw new ArgumentNullException(nameof(records));
+            }
+            if (string.IsNullOrWhiteSpace(filePath))
+            {
+                throw new ArgumentNullException(nameof(filePath));
+            }
+
+            Stream stream = await WriteAsync(records);
+
+            using (FileStream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+            {
+                await stream.CopyToAsync(fileStream);
+            }
         }
     }
 }

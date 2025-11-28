@@ -17,7 +17,7 @@ namespace RisHelper.Internal
             {
                 throw new ArgumentNullException(nameof(property));
             }
-            if (string.IsNullOrEmpty(tag))
+            if (string.IsNullOrWhiteSpace(tag))
             {
                 throw new ArgumentNullException(nameof(tag));
             }

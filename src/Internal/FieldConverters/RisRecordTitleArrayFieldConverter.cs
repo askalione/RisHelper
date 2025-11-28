@@ -3,11 +3,11 @@ using System.Linq;
 
 namespace RisHelper.Internal.FieldConverters
 {
-    internal class RisRecordTitleListFieldConverter : FieldConverter<IEnumerable<RisRecordTitle>>
+    internal class RisRecordTitleArrayFieldConverter : FieldConverter<RisRecordTitle[]>
     {
-        protected override IEnumerable<RisRecordTitle> Read(string tag, string srcValue, IEnumerable<RisRecordTitle> destValue)
+        protected override RisRecordTitle[] Read(string tag, string srcValue, RisRecordTitle[] destValue)
         {
-            var value = destValue?.ToList() ?? new List<RisRecordTitle>();
+            List<RisRecordTitle> value = destValue?.ToList() ?? [];
 
             RisRecordTitleType? type = null;
 
@@ -32,23 +32,23 @@ namespace RisHelper.Internal.FieldConverters
 
             value.Add(title);
 
-            return value;
+            return value.ToArray();
         }
 
-        protected override string[] Write(string tag, IEnumerable<RisRecordTitle> value)
+        protected override Field[] Write(string tag, RisRecordTitle[] value)
         {
-            var destValues = value
+            List<RisRecordTitle> destValues = value
                  .Where(x => string.IsNullOrEmpty(x.Value) == false)
                  .ToList();
 
             if (destValues == null)
             {
-                return null;
+                return [];
             }
 
-            var result = new List<string>();
+            List<Field> result = [];
 
-            foreach (var destValue in destValues)
+            foreach (RisRecordTitle destValue in destValues)
             {
                 var destTag = tag;
 
@@ -65,7 +65,7 @@ namespace RisHelper.Internal.FieldConverters
                         break;
                 }
 
-                result.Add(destTag + Constants.FieldValueSeparator + destValue);
+                result.Add(new Field(destTag, destValue.Value));
             }
 
             return result.ToArray();

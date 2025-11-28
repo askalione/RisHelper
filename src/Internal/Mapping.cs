@@ -50,7 +50,7 @@ namespace RisHelper.Internal
 
         public static bool TryGetPropertyContext(string tag, out PropertyContext propertyMapping)
         {
-            if (string.IsNullOrEmpty(tag))
+            if (string.IsNullOrWhiteSpace(tag))
             {
                 throw new ArgumentNullException(nameof(tag));
             }

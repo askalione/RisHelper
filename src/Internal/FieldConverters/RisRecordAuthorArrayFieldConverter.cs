@@ -3,11 +3,11 @@ using System.Linq;
 
 namespace RisHelper.Internal.FieldConverters
 {
-    internal class RisRecordAuthorListFieldConverter : FieldConverter<IEnumerable<RisRecordAuthor>>
+    internal class RisRecordAuthorArrayFieldConverter : FieldConverter<RisRecordAuthor[]>
     {
-        protected override IEnumerable<RisRecordAuthor> Read(string tag, string srcValue, IEnumerable<RisRecordAuthor> destValue)
+        protected override RisRecordAuthor[] Read(string tag, string srcValue, RisRecordAuthor[] destValue)
         {
-            var value = destValue?.ToList() ?? new List<RisRecordAuthor>();
+            List<RisRecordAuthor> value = destValue?.ToList() ?? [];
 
             RisRecordAuthorType? authorType = null;
 
@@ -35,25 +35,25 @@ namespace RisHelper.Internal.FieldConverters
 
             value.Add(author);
 
-            return value;
+            return value.ToArray();
         }
 
-        protected override string[] Write(string tag, IEnumerable<RisRecordAuthor> value)
+        protected override Field[] Write(string tag, RisRecordAuthor[] value)
         {
-            var destValues = value
-                .Where(x => string.IsNullOrEmpty(x.Value) == false)
+            List<RisRecordAuthor> destValues = value
+                .Where(x => string.IsNullOrWhiteSpace(x.Value) == false)
                 .ToList();
 
             if (destValues == null)
             {
-                return null;
+                return [];
             }
 
-            var result = new List<string>();
+            List<Field> result = [];
 
-            foreach (var destValue in destValues)
+            foreach (RisRecordAuthor destValue in destValues)
             {
-                var destTag = tag;
+                string destTag = tag;
 
                 switch (destValue.Type)
                 {
@@ -71,7 +71,7 @@ namespace RisHelper.Internal.FieldConverters
                         break;
                 }
 
-                result.Add(destTag + Constants.FieldValueSeparator + destValue);
+                result.Add(new Field(destTag, destValue.Value));
             }
 
             return result.ToArray();

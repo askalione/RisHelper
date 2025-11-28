@@ -1,5 +1,5 @@
-TY  - JOUR
-AU  - RisHelper.RisRecordAuthor
+﻿TY  - JOUR
+AU  - Faminskii, Andrei V.
 AB  - In this paper the author considers  a control problem for  initial and initial-boundary value problems for the Korteweg--de~Vries equation  on the real axis $I_1={\Bbb R}$ and on the semi-axes $I_2=(0,+\infty)$, $I_3=(-\infty,0)$. The right-hand side of the equation is the product $f_0(t)g(t,x)$ of a given function $g(t,x)$ and a control function $f_0(t)$. The problem under study is to find a pair $\{f_0(t),u(t,x)\}$ on $[0,T]$ and $[0,T]\times I_j$ correspondingly that satisfies the initial or initial-boundary value conditions and the additional integral condition $\int_{I_j}u(t,x)\omega(x)dx =\varphi(t)$ for the given functions $\omega$ and $\varphi$. For the control problem considered existence and uniqueness theorems are proved under some additional assumptions including small input data or a small $T$.
 DB  - msn
 DP  - EBSCOhost
@@ -21,7 +21,7 @@ PY  - 2019
 SN  - 15732878
 SN  - 00223239
 SP  - 290
-TI  - RisHelper.RisRecordTitle
+TI  - Control problems with an integral condition for Korteweg--de~Vries equation on unbounded domains.
 UR  - http://search.ebscohost.com/login.aspx?direct=true&db=msn&AN=MR3901996&site=ehost-live
 UR  - http://www.ams.org/mathscinet/MRAuthorID/189859
 UR  - http://www.ams.org/mathscinet-getitem?mr=3901996

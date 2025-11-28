@@ -2,92 +2,105 @@ using RisHelper.Internal;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading;
 
 namespace RisHelper
 {
     public static class RisReader
     {
-        public static IEnumerable<RisRecord> Read(string path)
+        public static async IAsyncEnumerable<RisRecord> ReadAsync(Stream stream,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
-            if (string.IsNullOrEmpty(path))
+            if (stream == null)
             {
-                throw new ArgumentNullException(nameof(path));
+                throw new ArgumentNullException(nameof(stream));
             }
 
-            if (File.Exists(path) == false)
-            {
-                throw new FileNotFoundException($"Invalid path {path}");
-            }
+            stream.Position = 0;
+            using StreamReader reader = new StreamReader(stream, Encoding.UTF8, true, 1024, true);
 
-            return Read(File.ReadAllBytes(path));
-        }
-
-        public static IEnumerable<RisRecord> Read(byte[] bytes)
-        {
-            if (bytes == null)
+            string? line;
+            List<Field> fields = [];
+            while ((line = await reader.ReadLineAsync()) != null)
             {
-                throw new ArgumentNullException(nameof(bytes));
-            }
-
-            using (var memoryStream = new MemoryStream(bytes))
-            {
-                using (var streamReader = new StreamReader(memoryStream))
+                if (IsEndingField(line))
                 {
-                    var content = streamReader.ReadToEnd();
-                    var entries = Regex.Split(content, Constants.EntrySeparator);
-                    var records = ReadRecords(entries);
-                    return records;
+                    RisRecord record = BuildRecord(fields);
+                    fields.Clear();
+                    yield return record;
                 }
-            }
-        }
-
-        private static IEnumerable<RisRecord> ReadRecords(string[] entries)
-        {
-            List<RisRecord> records = new List<RisRecord>();
-
-            if (entries == null)
-            {
-                return records;
-            }
-
-            foreach (var entry in entries)
-            {
-                var record = ReadRecord(entry);
-                if (record != null)
+                else if (TryParseField(line, out Field field))
                 {
-                    records.Add(record);
+                    fields.Add(field);
+                }
+                else
+                {
+                    throw new InvalidOperationException(
+                        "Invalid RIS format.");
                 }
             }
 
-            return records;
+            yield break;
         }
 
-        private static RisRecord ReadRecord(string entry)
+        public static IAsyncEnumerable<RisRecord> ReadAsync(string filePath,
+            CancellationToken cancellationToken = default)
         {
-            if (string.IsNullOrEmpty(entry))
+            if (string.IsNullOrWhiteSpace(filePath))
             {
-                return null;
+                throw new ArgumentNullException(nameof(filePath));
             }
 
-            var record = new RisRecord();
-            var fields = Regex.Split(entry, Constants.FieldSeparator);
-            foreach (var field in fields)
+            if (File.Exists(filePath) == false)
             {
-                var fieldArray = Regex.Split(field, Constants.FieldValueSeparator);
-                if (fieldArray.Length == 2)
+                throw new FileNotFoundException(
+                    $"Invalid file path \"{filePath}\".");
+            }
+
+            FileStream stream = File.Open(filePath, FileMode.Open);
+            return ReadAsync(stream, cancellationToken);
+        }
+
+        private static RisRecord BuildRecord(IEnumerable<Field> fields)
+        {
+            RisRecord record = new RisRecord();
+            foreach (Field field in fields)
+            {
+                if (Mapping.TryGetPropertyContext(field.Tag, out PropertyContext propertyContext))
                 {
-                    if (Mapping.TryGetPropertyContext(fieldArray[0], out PropertyContext propertyContext))
-                    {
-                        var tag = fieldArray[0];
-                        var srcValue = fieldArray[1];
-                        var destValue = propertyContext.Property.GetValue(record);
-                        propertyContext.Property.SetValue(record, propertyContext.Converter.Read(tag, srcValue, destValue), null);
-                    }
+                    object destValue = propertyContext.Property.GetValue(record);
+                    propertyContext.Property.SetValue(
+                        record,
+                        propertyContext.Converter.Read(field.Tag, field.Value, destValue),
+                        null);
                 }
             }
 
             return record;
+        }
+
+        private static bool IsEndingField(string line)
+            => string.Equals(line.Split(Constants.FieldValueSeparator)[0], Constants.EndingTag);
+
+        private static bool TryParseField(string line, out Field field)
+        {
+            field = null!;
+            string[] fieldData = line.Split(Constants.FieldValueSeparator);
+            if (fieldData.Length != 2)
+            {
+                return false;
+            }
+            string tag = fieldData[0].Trim();
+            string value = fieldData[1].Trim();
+            if (string.IsNullOrWhiteSpace(tag) || string.IsNullOrWhiteSpace(value))
+            {
+                return false;
+            }
+
+            field = new Field(tag, value);
+            return true;
         }
     }
 }

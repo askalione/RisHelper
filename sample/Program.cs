@@ -1,17 +1,23 @@
-using System.IO;
 using System.Reflection;
 
 namespace RisHelper.Sample
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             var samplePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\..\..\..\data\";
 
-            var records = RisReader.Read(Path.Combine(samplePath, "sample-read.ris"));
+            IAsyncEnumerable<RisRecord> records = RisReader.ReadAsync(Path.Combine(samplePath, "sample-read.ris"));
 
-            RisWriter.Write(records, Path.Combine(samplePath, "sample-write.ris"));
+            List<RisRecord> data = [];
+            await foreach (RisRecord record in records)
+            {
+                record.Type = RisRecordType.ART;
+                data.Add(record);
+            }
+
+            await RisWriter.WriteAsync(data, Path.Combine(samplePath, "sample-write.ris"));
         }
     }
 }

@@ -10,7 +10,7 @@ namespace RisHelper.Internal
 
         public FieldAttribute(string tag)
         {
-            if (string.IsNullOrEmpty(tag))
+            if (string.IsNullOrWhiteSpace(tag))
             {
                 throw new ArgumentNullException(nameof(tag));
             }

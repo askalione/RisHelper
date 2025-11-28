@@ -17,14 +17,14 @@ namespace RisHelper.Internal.FieldConverters.Defaults
             return null;
         }
 
-        protected override string[] Write(string tag, DateTime? value)
+        protected override Field[] Write(string tag, DateTime? value)
         {
             if (value.HasValue == false)
             {
-                return null;
+                return [];
             }
 
-            return new[] { tag + Constants.FieldValueSeparator + value.Value.ToString("yyyy/MM/dd") };
+            return [new Field(tag, value.Value.ToString("yyyy/MM/dd"))];
         }
     }
 }
